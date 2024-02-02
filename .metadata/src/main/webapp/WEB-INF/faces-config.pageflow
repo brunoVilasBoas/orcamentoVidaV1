@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf17067205383620" configfile="/orcamentoVidaBruno/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="public/pages/index.xhtml" id="pf17067452580900" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf17067452580901" path="/public/pages/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/principal/paginaInicial.xhtml" id="pf17067452580902" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf17067452580901" path="/pages/principal/paginaInicial.xhtml"/>
+  <links id="pf17067452580901" target="pf17067452580902" source="pf17067452580900" outcome="inicialAutenticado"/>
+</pageflow:Pageflow>

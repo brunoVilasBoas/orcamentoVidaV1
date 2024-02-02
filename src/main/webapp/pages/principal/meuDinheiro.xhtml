@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="../templates/index.xhtml">
+	<ui:define name="corpo">
+		<h:form id="frmMeuDinheiro">
+			
+			<p:panel styleClass="centralizaPanel" style="min-width:700px">
+				<h:panelGrid layout="block" columns="2" styleClass="centralizaPanelGrid">
+					<h:panelGrid layout="block" columns="1">
+						<p:panel id="pnlMeuDinheiro" layout="block">
+		
+							<f:facet name="header">
+								<h:panelGrid columns="2" layout="block">
+									<i class="pi pi-wallet iconTitulo"></i>
+									<p:outputLabel id="outLabelTitulo" value="Meu Dinheiro" />
+								</h:panelGrid>	
+							</f:facet>
+		
+							<h:panelGroup layout="block" style="width:100%;">
+								<p:toolbar>
+									<p:toolbarGroup>
+										<p:inputText id="inputFonteDinheiro" value="#{meuDinheiroBean.fonteEntrada}" 
+											placeholder="Fonte" size="12"/>
+		
+										<p:inputNumber id="inputValorDinheiro" value="#{meuDinheiroBean.valorEntrada}" size="10" label="valor" symbol="R$ " 
+											decimalSeparator="," thousandSeparator="." style="margin-left: .5rem;"/>
+		
+										<p:selectOneButton id="inputDisponibilidadeDinheiro"  value="#{meuDinheiroBean.disponibilidadeEntrada}" 
+												style="margin-left: .5rem;" >
+											<f:selectItem itemLabel="Disponível" itemValue="S"/>
+										</p:selectOneButton>
+									</p:toolbarGroup>
+									
+									<p:toolbarGroup align="right">
+										<p:commandButton value="Add" icon="pi pi-plus"
+											actionListener="#{meuDinheiroBean.adicionarNovaFonte}"
+											update=":frmMeuDinheiro:dataTableMeuDinheiro, msgs"
+											process="@this,inputFonteDinheiro,
+													 inputValorDinheiro,inputDisponibilidadeDinheiro"
+											styleClass="ui-button-success" style="margin-left: .5rem;">
+										</p:commandButton>
+									</p:toolbarGroup>
+								</p:toolbar>
+		
+								<p:dataTable id="dataTableMeuDinheiro" var="dinheiro"
+									editable="true" editMode="cell" size="small"
+									value="#{meuDinheiroBean.listaMeuDinheiro}">
+									
+		<!-- 							<f:facet name="header"> -->
+		<!-- 	 			       		 	<div align="center"> -->
+		<!-- 		 			            	<h:outputText value="Entrada" /> -->
+		<!-- 		 			            </div> -->
+		<!-- 	 			            </f:facet> -->
+		
+									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs"/>
+		
+									<p:column headerText="Fonte">
+										<h:outputText value="#{dinheiro.fonte}" />
+									</p:column>
+									
+									<p:column headerText="Disponível"  style="text-align:center">
+										<h:outputText value="#{dinheiro.disponivel.descricao}" />
+									</p:column>
+		
+									<p:column headerText="Valor" style="text-align:right">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{dinheiro.valor}">
+													<f:convertNumber currencySymbol="R$ " type="currency" />
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputNumber value="#{dinheiro.valor}" style="width:100%"
+													label="valor" symbol="R$" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+		
+									<p:column exportable="false" style="text-align:center; width:50px;">
+										<p:commandButton class="ui-button-secondary rounded-button" title="remover item"
+											update=":frmMeuDinheiro:dataTableMeuDinheiro, msgs"
+											icon="pi pi-trash" process="@this" action="#{meuDinheiroBean.removerItem}">
+											<f:setPropertyActionListener value="#{dinheiro}" target="#{meuDinheiroBean.fonteSelecionada}" />
+										 	<p:confirm header="Confirmação" message="Você deseja remover esse item?" icon="pi pi-info-circle"/>
+		        						</p:commandButton>
+									</p:column>
+									
+									<p:columnGroup type="footer">
+										<p:row>
+		                    				<p:column colspan="2" style="text-align:right" footerText="Total Disponível:"/>
+		                    				<p:column style="text-align:right">
+						                        <f:facet name="footer">
+						                            <h:outputText value="#{meuDinheiroBean.dinheiroDisponivel}">
+						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
+						                            </h:outputText>
+						                        </f:facet>
+						                    </p:column>
+						                    <p:column />
+		                    			</p:row>
+		                    			<p:row>
+		                    				<p:column colspan="2" style="text-align:right" footerText="Total:"/>
+		                    				<p:column style="text-align:right">
+						                        <f:facet name="footer">
+						                            <h:outputText value="#{meuDinheiroBean.totalDinheiro}">
+						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
+						                            </h:outputText>
+						                        </f:facet>
+						                    </p:column>
+						                    <p:column />
+		                    			</p:row>	
+									</p:columnGroup>
+		
+								</p:dataTable>
+							</h:panelGroup>
+						</p:panel>	
+						
+						<p:panel id="pnlMeusGanhos" layout="block">
+						
+							<f:facet name="header">
+								<h:panelGrid columns="2" layout="block">
+									<i class="pi pi-chart-line iconTitulo"></i>
+									<p:outputLabel value="Meus rendimentos por mês" />
+								</h:panelGrid>
+							</f:facet>
+							
+							<h:panelGroup layout="block">
+								<p:toolbar>
+									<p:toolbarGroup>
+										<p:inputText id="inputFonteGanho" value="#{meuDinheiroBean.fonteEntrada}" 
+											placeholder="Fonte" size="12"/>
+		
+										<p:inputNumber id="inputValorGanho" value="#{meuDinheiroBean.valorEntrada}" size="10" label="valor" symbol="R$ " 
+											decimalSeparator="," thousandSeparator="." style="margin-left: .5rem;"/>
+		
+									</p:toolbarGroup>
+									
+									<p:toolbarGroup align="right">
+										<p:commandButton value="Add" icon="pi pi-plus"
+											actionListener="#{meuDinheiroBean.adicionarNovoRendimento}"
+											update=":frmMeuDinheiro:dataTableMeusGanhos, msgs"
+											process="@this,inputFonteGanho,inputValorGanho"
+											styleClass="ui-button-success" style="margin-left: .5rem;">
+										</p:commandButton>
+									</p:toolbarGroup>
+								</p:toolbar>
+		
+								<p:dataTable id="dataTableMeusGanhos" var="rendimento"
+									editable="true" editMode="cell" size="small"
+									value="#{meuDinheiroBean.listaRendimentosMensais}">
+		
+									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs"/>
+		
+									<p:column headerText="Fonte">
+										<h:outputText value="#{rendimento.fonte}" />
+									</p:column>
+									
+									<p:column headerText="Ativo" style="text-align:center">
+										<h:outputText value="#{rendimento.ativo.descricao}" />
+									</p:column>
+		
+									<p:column headerText="Valor" style="text-align:right">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{rendimento.valor}">
+													<f:convertNumber currencySymbol="R$ " type="currency" />
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputNumber value="#{rendimento.valor}" style="width:100%"
+													label="valor" symbol="R$" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+		
+									<p:column exportable="false" style="text-align:center; width:50px;">
+										<p:commandButton class="ui-button-secondary rounded-button" title="remover item"
+											update=":frmMeuDinheiro:dataTableMeusGanhos, msgs"
+											icon="pi pi-trash" process="@this" action="#{meuDinheiroBean.removerItemRendimento}">
+											<f:setPropertyActionListener value="#{rendimento}" target="#{meuDinheiroBean.rendimentoSelecionada}" />
+										 	<p:confirm header="Confirmação" message="Você deseja remover esse item?" icon="pi pi-info-circle"/>
+		        						</p:commandButton>
+									</p:column>
+									
+									<p:columnGroup type="footer">
+										<p:row>
+		                    				<p:column colspan="2" style="text-align:right" footerText="Rendimento Total:"/>
+		                    				<p:column style="text-align:right">
+						                        <f:facet name="footer">
+						                            <h:outputText value="#{meuDinheiroBean.dinheiroDisponivel}">
+						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
+						                            </h:outputText>
+						                        </f:facet>
+						                    </p:column>
+						                    <p:column />
+		                    			</p:row>
+		                    			<p:row>
+		                    				<p:column colspan="2" style="text-align:right" footerText="Total:"/>
+		                    				<p:column style="text-align:right">
+						                        <f:facet name="footer">
+						                            <h:outputText value="#{meuDinheiroBean.ganhosMensais}">
+						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
+						                            </h:outputText>
+						                        </f:facet>
+						                    </p:column>
+						                    <p:column />
+		                    			</p:row>	
+									</p:columnGroup>
+		
+								</p:dataTable>
+							</h:panelGroup>
+		
+						</p:panel>
+					</h:panelGrid>
+					
+					<h:panelGrid layout="block" columns="1">
+						<p:panel id="pnlHistoricoMeuDinheiro" layout="block">
+						
+							<f:facet name="header">
+								<h:panelGrid columns="2" layout="block">
+									<i class="pi pi-history iconTitulo"></i>
+									<p:outputLabel value="Histórico do meu dinheiro por mês" />
+								</h:panelGrid>
+							</f:facet>
+							
+							<h:panelGroup layout="block">
+		
+								<p:dataTable id="dataTableHistoricoMeuDinheiro" var="historico"
+									editable="true" editMode="cell" size="small"
+									value="#{meuDinheiroBean.listaHistoricoMeuDinheiro}">
+		
+									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs"/>
+		
+									<p:column headerText="Data">
+										<h:outputText value="#{historico.data}">
+											<f:convertDateTime pattern="dd/MM/20yy" locale="pt_BR"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column headerText="Valor Disponivel do Mês" style="text-align:right">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{historico.valorDisponivelMes}">
+													<f:convertNumber currencySymbol="R$ " type="currency" />
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputNumber value="#{historico.valorDisponivelMes}" style="width:100%"
+													label="valor" symbol="R$" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+									
+									<p:column headerText="Valor Total do Mês" style="text-align:right">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{historico.valorTotalMes}">
+													<f:convertNumber currencySymbol="R$ " type="currency" />
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputNumber value="#{historico.valorTotalMes}" style="width:100%"
+													label="valor" symbol="R$" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+		
+								</p:dataTable>
+							</h:panelGroup>
+						</p:panel>
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
+</html>

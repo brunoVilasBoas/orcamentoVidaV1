@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+	<ui:composition template="../templates/index.xhtml">
+		<ui:define name="corpo">
+			<h:form id="frmTelaInicio">
+			
+				<h:panelGroup layout="block" styleClass="centraliza">
+			
+					<p:panel>
+			
+						<f:facet name="header">
+							<h:panelGrid columns="2" layout="block">
+								<i class="pi pi-calculator iconTitulo"></i>
+								<p:outputLabel id="outLabelTitulo" value="Informações gerais sobre minha vida financeira" />
+							</h:panelGrid>
+						</f:facet>
+			
+						<h:panelGrid id="pnlGrdTelaInicio" columns="4" styleClass="pnlGrdFormatacao">
+			
+							<h:outputLabel value="DINHEIRO DISPONÍVEL:"  />
+							<h:outputText value="#{telaInicioBean.dinheiroDisponivel}">
+								<f:convertNumber currencySymbol="R$ " type="currency" />
+							</h:outputText>
+			
+							<h:outputLabel value="GANHOS MENSAIS:"  />
+							<h:outputText value="#{telaInicioBean.ganhosMensais}">
+								<f:convertNumber currencySymbol="R$ " type="currency" />
+							</h:outputText>
+			
+							<h:outputLabel value="TOTAL DO MEU DINHEIRO:" />
+							<h:outputText value="#{telaInicioBean.totalDinheiro}">
+								<f:convertNumber currencySymbol="R$ " type="currency" />
+							</h:outputText>
+			
+							<h:outputLabel value="GASTOS MENSAIS:" />
+							<h:outputText value="#{telaInicioBean.gastosMensais}">
+								<f:convertNumber currencySymbol="R$ " type="currency" />
+							</h:outputText>
+			
+							<p:column /><p:column />
+			
+							<h:outputLabel value="RENDIMENTO MENSAL: " />
+							<p:column>
+								<div id="idResultado" style="font-weight:bold;">
+									<h:outputText value="#{telaInicioBean.rendimentosMensais}">
+										<f:convertNumber currencySymbol="R$ " type="currency" />
+									</h:outputText>
+								</div>
+							</p:column>
+
+						</h:panelGrid>
+						
+						<div class="card">
+						    <p:lineChart model="#{telaInicioBean.lineModelRendimentosMensais}" style="width: 100%; height: 400px;"/>
+						</div>
+						
+					</p:panel>
+				</h:panelGroup>
+			
+			</h:form>
+		</ui:define>	
+	</ui:composition>
+
+</html>

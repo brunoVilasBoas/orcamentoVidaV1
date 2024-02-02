@@ -1,0 +1,12 @@
+@charset "ISO-8859-1";
+
+
+.pnlGrdFormatacao {
+	border-spacing: 40px 20px; 
+	border-collapse: separate; 
+	text-align:left;
+}
+
+.pnlGrdFormatacao label {
+	font-weight: bold;
+}

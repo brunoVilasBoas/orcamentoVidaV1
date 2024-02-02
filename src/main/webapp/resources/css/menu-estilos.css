@@ -1,0 +1,9 @@
+@charset "ISO-8859-1";
+
+div.ui-menu {
+	text-align: left;
+}
+
+div.ui-menu .ui-menuitem-link span {
+	font-weight: bolder;
+}

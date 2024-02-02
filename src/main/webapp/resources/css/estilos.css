@@ -1,0 +1,105 @@
+@charset "ISO-8859-1";
+
+*:not( h1, h2, h3, h4, h5, h6) {
+	font-family: tahoma, arial, verdana, helvetica;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 12px !important;
+}
+
+body {
+	margin-top: 5px;
+	background: #55688a;
+}
+
+html, body {
+	height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 1.1rem 0 1rem 0;
+	font-family: inherit;
+	font-weight: 600;
+	line-height: 1.2;
+	color: #ffffff;
+}
+
+.ui-growl {
+	text-decoration: none;
+	position:fixed !important;
+	top:40px !important;
+	right:6% !important;
+}
+
+.ui-panel {
+	min-width:300px;
+}
+
+.centraliza {
+	margin: auto;
+	width: 90%;
+	border: 1px solid #55688a;
+	padding: 5px;
+	text-align: -webkit-center;
+}
+
+.centraliza tr {
+	vertical-align: top !important;
+}
+
+.centralizaPanel {
+	margin: auto;
+	width: 90%;
+	border: 1px solid #55688a 5px;
+	padding: 5px !important;
+}
+
+.centralizaPanel .ui-panel-content {
+	border-radius: 4px !important;
+	vertical-align: top !important;
+}
+
+.centralizaPanelGrid {
+	margin: auto;
+	width: 100%;
+	border: 1px solid #55688a 5px;
+	padding: 5px !important;
+}
+
+.centralizaPanelGrid tr {
+	vertical-align: top !important;
+}
+
+.centralizaPanelGroup {
+	margin: auto;
+	width: 90%;
+	border: 1px solid #55688a;
+	padding: 5px;
+}
+
+#logo {
+	background: rgb(112, 131, 167);
+	padding: 5px;
+	padding-right: 20px;
+	border-radius: 10px;
+}
+
+.iconTitulo {
+	font-size: 1.7rem !important;
+	margin-right: 5px;
+}
+
+.ui-dialog .ui-dialog-footer {
+	text-align: center !important;
+}
+
+.faturamento {
+	font-size: 24px;
+	font-weight: bold;
+	transition: color 0.5s ease-in-out;
+}
+
+.ui-chart {
+	margin-bottom: 50px;
+}

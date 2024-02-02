@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="../templates/index.xhtml">
+	<ui:define name="corpo">
+		<h:form id="frmMeusGastos">
+			
+			<h:panelGroup layout="block" styleClass="centraliza">
+
+				<p:panel id="pnlMeusGastos" layout="block">
+
+					<f:facet name="header">
+						<p:outputLabel id="outLabelTitulo" value="Meus Gastos" />
+					</f:facet>
+
+					<h:panelGroup layout="block" style="min-width:400px;">
+						<p:toolbar>
+							<p:toolbarGroup>
+								<p:inputText id="inputFonte" value="#{meusGastosBean.fonteEntrada}" 
+									placeholder="Fonte" size="12"/>
+
+								<p:inputNumber value="#{meusGastosBean.valorEntrada}" size="10" label="valor" symbol="R$ " 
+									decimalSeparator="," thousandSeparator="." style="margin-left: .5rem;"/>
+							</p:toolbarGroup>
+							
+							<p:toolbarGroup align="right">
+								<p:commandButton value="Add" icon="pi pi-plus"
+									actionListener="#{meusGastosBean.adicionarNovaFonte}"
+									update=":frmMeusGastos:dataTableMeusGastos, msgs"
+									styleClass="ui-button-success" style="margin-left: .5rem;">
+								</p:commandButton>
+							</p:toolbarGroup>
+						</p:toolbar>
+
+						<p:dataTable id="dataTableMeusGastos" var="dinheiro"
+							editable="true" editMode="cell"
+							value="#{meusGastosBean.listaGastosMensais}">
+
+							<p:ajax event="cellEdit" listener="#{meusGastosBean.onCellEdit}" update="msgs"/>
+
+							<p:column headerText="Fonte">
+								<h:outputText value="#{dinheiro.fonte}" />
+							</p:column>
+
+							<p:column headerText="Valor" style="text-align:right">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{dinheiro.valor}">
+											<f:convertNumber currencySymbol="R$ " type="currency" />
+										</h:outputText>
+									</f:facet>
+									<f:facet name="input">
+										<p:inputNumber value="#{dinheiro.valor}" style="width:100%"
+											label="valor" symbol="R$" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column exportable="false" style="text-align:right">
+								<p:commandButton class="ui-button-secondary rounded-button" title="remover item"
+									update=":frmMeusGastos:dataTableMeusGastos, msgs"
+									icon="pi pi-trash" process="@this" action="#{meusGastosBean.removerItem}">
+									<f:setPropertyActionListener value="#{dinheiro}" target="#{meusGastosBean.fonteSelecionada}" />
+								 	<p:confirm header="Confirmação" message="Você deseja remover esse item?" icon="pi pi-info-circle"/>
+        						</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+					</h:panelGroup>
+
+				</p:panel>
+			</h:panelGroup>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
+</html>
