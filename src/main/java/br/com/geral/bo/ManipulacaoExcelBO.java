@@ -387,9 +387,9 @@ public class ManipulacaoExcelBO {
 		
 		List<GastosMensais> listaGastosMensais = new ArrayList<GastosMensais>();
 		
-		listaGastosMensais.add(new GastosMensais(1L, "Luz", SimNaoEnum.S, new BigDecimal(360)));
-		listaGastosMensais.add(new GastosMensais(2L, "Vivo", SimNaoEnum.S, new BigDecimal(60)));
-		listaGastosMensais.add(new GastosMensais(3L, "Psicologo", SimNaoEnum.S, new BigDecimal(400)));
+		listaGastosMensais.add(new GastosMensais(1L, "Luz", SimNaoEnum.S, SimNaoEnum.S, new BigDecimal(360)));
+		listaGastosMensais.add(new GastosMensais(2L, "Vivo", SimNaoEnum.S, SimNaoEnum.S, new BigDecimal(60)));
+		listaGastosMensais.add(new GastosMensais(3L, "Psicologo", SimNaoEnum.N, SimNaoEnum.S, new BigDecimal(400)));
 		
 		return listaGastosMensais;
 	}

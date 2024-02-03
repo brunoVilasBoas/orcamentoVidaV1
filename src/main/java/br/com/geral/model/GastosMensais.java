@@ -8,13 +8,15 @@ public class GastosMensais {
 	
 	private Long id;
 	private String fonte;
+	private SimNaoEnum gastoPessoal;
 	private SimNaoEnum ativo;
 	private BigDecimal valor;
 	
-	public GastosMensais(Long id, String fonte, SimNaoEnum ativo, BigDecimal valor) {
+	public GastosMensais(Long id, String fonte, SimNaoEnum gastoPessoal, SimNaoEnum ativo, BigDecimal valor) {
 		super();
 		this.id = id;
 		this.fonte = fonte;
+		this.gastoPessoal = gastoPessoal;
 		this.ativo = ativo;
 		this.valor = valor;
 	}
@@ -39,6 +41,14 @@ public class GastosMensais {
 
 	public void setFonte(String fonte) {
 		this.fonte = fonte;
+	}
+
+	public SimNaoEnum getGastoPessoal() {
+		return gastoPessoal;
+	}
+
+	public void setGastoPessoal(SimNaoEnum gastoPessoal) {
+		this.gastoPessoal = gastoPessoal;
 	}
 
 	public SimNaoEnum getAtivo() {

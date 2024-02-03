@@ -42,7 +42,7 @@ public class MeusGastosBean extends GenericBean {
 			this.disponibilidadeEntrada = SimNaoEnum.N;
 		}
 		
-		this.listaGastosMensais.add(new GastosMensais(null, this.fonteEntrada, this.disponibilidadeEntrada, this.valorEntrada));
+		this.listaGastosMensais.add(new GastosMensais(null, this.fonteEntrada, SimNaoEnum.N, this.disponibilidadeEntrada, this.valorEntrada));
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO.toString(), "Linha adicionada.");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
@@ -56,9 +56,9 @@ public class MeusGastosBean extends GenericBean {
     public void onCellEdit(CellEditEvent<?> event) {
         Object antigoValor = event.getOldValue();
         Object novoValor = event.getNewValue();
-
+        
         if (novoValor != null && !novoValor.equals(antigoValor)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Linha editada", "antigo valor: " + antigoValor + ", novo valor:" + novoValor);
+        	FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Linha editada", "antigo valor: " + antigoValor + ", novo valor: " + novoValor + ".");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }

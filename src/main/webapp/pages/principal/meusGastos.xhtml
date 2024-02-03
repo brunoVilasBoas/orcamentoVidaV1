@@ -9,71 +9,147 @@
 	<ui:define name="corpo">
 		<h:form id="frmMeusGastos">
 			
-			<h:panelGroup layout="block" styleClass="centraliza">
+			<p:panel styleClass="centralizaPanel" style="min-width:700px">
+				<h:panelGrid layout="block" columns="2" styleClass="centralizaPanelGrid" 
+							 columnClasses="columnSize70, columnSize30">
+					<h:panelGrid layout="block" columns="1">
+						<p:panel id="pnlMeusGastos" layout="block">
+		
+							<f:facet name="header">
+								<p:outputLabel id="outLabelTitulo" value="Meus Gastos" />
+							</f:facet>
+					
+							<h:panelGroup layout="block" style="width:100%;">
+								<p:toolbar>
+									<p:toolbarGroup>
+										<p:inputText id="inputFonte" value="#{meusGastosBean.fonteEntrada}" 
+											placeholder="Fonte" size="12"/>
+		
+										<p:inputNumber value="#{meusGastosBean.valorEntrada}" size="10" label="valor" symbol="R$ " 
+											decimalSeparator="," thousandSeparator="." style="margin-left: .5rem;"/>
+									</p:toolbarGroup>
+									
+									<p:toolbarGroup align="right">
+										<p:commandButton value="Add" icon="pi pi-plus"
+											actionListener="#{meusGastosBean.adicionarNovaFonte}"
+											update=":frmMeusGastos:dataTableMeusGastos, msgs"
+											styleClass="ui-button-success" style="margin-left: .5rem;">
+										</p:commandButton>
+									</p:toolbarGroup>
+								</p:toolbar>
+								
+								<p:remoteCommand name="refreshFooter" update="dataTableMeusGastos:idTotalGastosMensais"/>
+								
+								<p:dataTable id="dataTableMeusGastos" var="gasto"
+									editable="true" editMode="cell" size="small" partialUpdate="false"
+									value="#{meusGastosBean.listaGastosMensais}">
+		
+									<p:ajax event="cellEdit" listener="#{meusGastosBean.onCellEdit}" update="msgs" partialSubmit="true"
+										process="optionAtivo" oncomplete="refreshFooter();" />
+		
+									<p:column headerText="Fonte">
+										<h:outputText value="#{gasto.fonte}" />
+									</p:column>
+									
+									<p:column headerText="Gasto Pessoal"  style="text-align:center;width:25%;">
+										<h:outputText value="#{gasto.gastoPessoal.descricao}" />
+									</p:column>
+									
+									<p:column headerText="Ativo"  style="text-align:center; width:10%;">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{gasto.ativo.descricao}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="optionAtivo" value="#{gasto.ativo}">
+													<f:selectItem itemLabel="Sim" itemValue="S"/>
+													<f:selectItem itemLabel="Não" itemValue="N"/>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
 
-				<p:panel id="pnlMeusGastos" layout="block">
-
-					<f:facet name="header">
-						<p:outputLabel id="outLabelTitulo" value="Meus Gastos" />
-					</f:facet>
-
-					<h:panelGroup layout="block" style="min-width:400px;">
-						<p:toolbar>
-							<p:toolbarGroup>
-								<p:inputText id="inputFonte" value="#{meusGastosBean.fonteEntrada}" 
-									placeholder="Fonte" size="12"/>
-
-								<p:inputNumber value="#{meusGastosBean.valorEntrada}" size="10" label="valor" symbol="R$ " 
-									decimalSeparator="," thousandSeparator="." style="margin-left: .5rem;"/>
-							</p:toolbarGroup>
-							
-							<p:toolbarGroup align="right">
-								<p:commandButton value="Add" icon="pi pi-plus"
-									actionListener="#{meusGastosBean.adicionarNovaFonte}"
-									update=":frmMeusGastos:dataTableMeusGastos, msgs"
-									styleClass="ui-button-success" style="margin-left: .5rem;">
-								</p:commandButton>
-							</p:toolbarGroup>
-						</p:toolbar>
-
-						<p:dataTable id="dataTableMeusGastos" var="dinheiro"
-							editable="true" editMode="cell"
-							value="#{meusGastosBean.listaGastosMensais}">
-
-							<p:ajax event="cellEdit" listener="#{meusGastosBean.onCellEdit}" update="msgs"/>
-
-							<p:column headerText="Fonte">
-								<h:outputText value="#{dinheiro.fonte}" />
-							</p:column>
-
-							<p:column headerText="Valor" style="text-align:right">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{dinheiro.valor}">
-											<f:convertNumber currencySymbol="R$ " type="currency" />
+									<p:column headerText="Valor" style="text-align:right; width:20%;">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{gasto.valor}">
+													<f:convertNumber currencySymbol="R$ " type="currency" />
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputNumber  value="#{gasto.valor}" style="width:90%"
+													label="valor" symbol="R$" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
+		
+									<p:column exportable="false" style="text-align:center; width:40px;">
+										<p:commandButton class="ui-button-secondary rounded-button" title="remover item"
+											update=":frmMeusGastos:dataTableMeusGastos, msgs"
+											icon="pi pi-trash" process="@this" action="#{meusGastosBean.removerItem}">
+											<f:setPropertyActionListener value="#{gasto}" target="#{meusGastosBean.fonteSelecionada}" />
+										 	<p:confirm header="Confirmação" message="Você deseja remover esse item?" icon="pi pi-info-circle"/>
+		        						</p:commandButton>
+									</p:column>
+									<p:columnGroup type="footer">
+		                    			<p:row>
+		                    				<p:column colspan="3" style="text-align:right" footerText="Total:"/>
+		                    				<p:column style="text-align:right">
+						                        <f:facet name="footer">
+						                            <h:outputText id="idTotalGastosMensais" value="#{meusGastosBean.gastosMensais}">
+						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
+						                            </h:outputText>
+						                        </f:facet>
+						                    </p:column>
+						                    <p:column />
+		                    			</p:row>	
+									</p:columnGroup>
+								</p:dataTable>
+							</h:panelGroup>
+		
+						</p:panel>
+					</h:panelGrid>
+					<h:panelGrid layout="block" columns="1">
+						<p:panel id="pnlMeusHistoricoGastos" layout="block">
+							<f:facet name="header">
+								<p:outputLabel value="Histórico de Gastos" />
+							</f:facet>
+			
+							<h:panelGroup layout="block" style="width:100%;">
+								
+								<p:dataTable id="dataTableHistoricoMeusGastos" var="historico"
+									editable="true" editMode="cell" size="small"
+									value="#{meusGastosBean.listaHistoricoMeusGastos}">
+									
+									<p:ajax event="cellEdit" listener="#{meusGastosBean.onCellEdit}" update="msgs"/>
+		
+									<p:column headerText="Data">
+										<h:outputText value="#{historico.data}">
+											<f:convertDateTime pattern="dd/MM/20yy" locale="pt_BR"/>
 										</h:outputText>
-									</f:facet>
-									<f:facet name="input">
-										<p:inputNumber value="#{dinheiro.valor}" style="width:100%"
-											label="valor" symbol="R$" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
+									</p:column>
+									
+									<p:column headerText="Valor Gasto no Mês" style="text-align:right">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{historico.valorGastoMes}">
+													<f:convertNumber currencySymbol="R$ " type="currency" />
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputNumber value="#{historico.valorGastoMes}" style="width:100%"
+													label="valor" symbol="R$" />
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
 
-							<p:column exportable="false" style="text-align:right">
-								<p:commandButton class="ui-button-secondary rounded-button" title="remover item"
-									update=":frmMeusGastos:dataTableMeusGastos, msgs"
-									icon="pi pi-trash" process="@this" action="#{meusGastosBean.removerItem}">
-									<f:setPropertyActionListener value="#{dinheiro}" target="#{meusGastosBean.fonteSelecionada}" />
-								 	<p:confirm header="Confirmação" message="Você deseja remover esse item?" icon="pi pi-info-circle"/>
-        						</p:commandButton>
-							</p:column>
-
-						</p:dataTable>
-					</h:panelGroup>
-
-				</p:panel>
-			</h:panelGroup>
+								</p:dataTable>
+							
+							</h:panelGroup>
+						</p:panel>
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:panel>		
 
 		</h:form>
 	</ui:define>

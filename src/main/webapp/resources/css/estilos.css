@@ -71,6 +71,18 @@ h1, h2, h3, h4, h5, h6 {
 	vertical-align: top !important;
 }
 
+.columnSize70 {
+	width: 70%;
+}
+
+.columnSize30 {
+	width: 30%;
+}
+
+.columnSize50 {
+	width: 50%;
+}
+
 .centralizaPanelGroup {
 	margin: auto;
 	width: 90%;
