@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
+import br.com.geral.bo.MeusGastosBO;
 import br.com.geral.enums.SimNaoEnum;
 import br.com.geral.enums.SumarioMensagem;
 import br.com.geral.model.GastosMensais;
@@ -27,6 +28,8 @@ import br.com.geral.model.RendimentosMensais;
 public abstract class GenericBean {
 
 	protected SumarioMensagem sumarioMensagem;
+	
+	protected MeusGastosBO boMeusGastos;
 	
 	protected List<GastosMensais> listaGastosMensais;
 	protected List<MeuDinheiro> listaMeuDinheiro;
@@ -55,15 +58,11 @@ public abstract class GenericBean {
 	}
 	
 	
-	public void CargaListas() {
+	public void CargaListas(){
 		
-		this.listaGastosMensais = new ArrayList<GastosMensais>();
+		
 		this.listaMeuDinheiro = new ArrayList<MeuDinheiro>();
 		this.listaRendimentosMensais = new ArrayList<RendimentosMensais>();
-		
-		this.listaGastosMensais.add(new GastosMensais(1L, "Luz", SimNaoEnum.S, SimNaoEnum.S, new BigDecimal(360)));
-		this.listaGastosMensais.add(new GastosMensais(2L, "Vivo", SimNaoEnum.S, SimNaoEnum.S, new BigDecimal(60)));
-		this.listaGastosMensais.add(new GastosMensais(3L, "Psicologo", SimNaoEnum.N, SimNaoEnum.N, new BigDecimal(400)));
 		
 		this.listaMeuDinheiro.add(new MeuDinheiro(1L, "Nubank", SimNaoEnum.S, new BigDecimal(40162.04)));
 		this.listaMeuDinheiro.add(new MeuDinheiro(2L, "Itáu", SimNaoEnum.S, new BigDecimal(25131.47)));
@@ -94,18 +93,18 @@ public abstract class GenericBean {
 		this.listaHistoricoMeusGastos = new ArrayList<HistoricoMeusGastos>();
 		
 		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2022, 12, 8), new BigDecimal(10790.53)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 1, 8), new BigDecimal(6864.85)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 2, 8), new BigDecimal(6269.63)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 3, 8), new BigDecimal(6552.51)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 4, 8), new BigDecimal(6425.46)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 5, 8), new BigDecimal(8488.85)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 6, 8), new BigDecimal(5391.51)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 7, 8), new BigDecimal(6463.32)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 8, 8), new BigDecimal(5696.68)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 9, 8), new BigDecimal(6547.06)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 11, 8), new BigDecimal(7439.88)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2023, 12, 8), new BigDecimal(10270.69)));
-		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(1L, new Date(2024, 1, 8), new BigDecimal(7469.02)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(2L, new Date(2023, 1, 8), new BigDecimal(6864.85)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(3L, new Date(2023, 2, 8), new BigDecimal(6269.63)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(4L, new Date(2023, 3, 8), new BigDecimal(6552.51)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(5L, new Date(2023, 4, 8), new BigDecimal(6425.46)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(6L, new Date(2023, 5, 8), new BigDecimal(8488.85)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(7L, new Date(2023, 6, 8), new BigDecimal(5391.51)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(8L, new Date(2023, 7, 8), new BigDecimal(6463.32)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(9L, new Date(2023, 8, 8), new BigDecimal(5696.68)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(10L, new Date(2023, 9, 8), new BigDecimal(6547.06)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(11L, new Date(2023, 11, 8), new BigDecimal(7439.88)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(12L, new Date(2023, 12, 8), new BigDecimal(10270.69)));
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(13L, new Date(2024, 1, 8), new BigDecimal(7469.02)));
 		
 	}
 	

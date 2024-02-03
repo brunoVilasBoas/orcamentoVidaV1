@@ -1,15 +1,16 @@
 package br.com.geral.bean;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.event.CellEditEvent;
 
+import br.com.geral.bo.MeusGastosBO;
 import br.com.geral.enums.SimNaoEnum;
 import br.com.geral.enums.SumarioMensagem;
 import br.com.geral.model.GastosMensais;
@@ -20,21 +21,34 @@ public class MeusGastosBean extends GenericBean {
 	
 	private GastosMensais fonteSelecionada;
 	
+	private MeusGastosBO bo;
+	
 	private String fonteEntrada;
 	private BigDecimal valorEntrada;
 	private SimNaoEnum disponibilidadeEntrada;
 	
+	public MeusGastosBean() {
+		super();
+		this.bo = new MeusGastosBO();
+	}
+
 	@PostConstruct
 	public void init(){
 		this.valorEntrada = BigDecimal.ZERO;
-		CargaListas();
+		this.listaGastosMensais = new ArrayList<GastosMensais>();
+		
+		try {
+			this.setListaGastosMensais(bo.retornarMeusGastos());
+			this.setListaHistoricoMeusGastos(bo.retornarHistoricoMeusGastos());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void adicionarNovaFonte() {
 		
 		if(this.fonteEntrada == null || this.fonteEntrada.isEmpty()) {
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, SumarioMensagem.ATENCAO.toString(), "Necessário adicionar fonte.");
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+			enviaMensagem(FacesMessage.SEVERITY_WARN, SumarioMensagem.ATENCAO, "Necessário adicionar fonte.");
 			return;
 		}
 		
@@ -43,14 +57,12 @@ public class MeusGastosBean extends GenericBean {
 		}
 		
 		this.listaGastosMensais.add(new GastosMensais(null, this.fonteEntrada, SimNaoEnum.N, this.disponibilidadeEntrada, this.valorEntrada));
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO.toString(), "Linha adicionada.");
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Linha adicionada.");
 	}
 	
 	public void removerItem() {
 		this.listaGastosMensais.remove(this.fonteSelecionada);
-		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO.toString(), "Linha removida.");
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Linha removida.");
 	}
 	
     public void onCellEdit(CellEditEvent<?> event) {
@@ -58,9 +70,22 @@ public class MeusGastosBean extends GenericBean {
         Object novoValor = event.getNewValue();
         
         if (novoValor != null && !novoValor.equals(antigoValor)) {
-        	FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Linha editada", "antigo valor: " + antigoValor + ", novo valor: " + novoValor + ".");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+        	enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.EDITADO, 
+        			"antigo valor: " + antigoValor + ", novo valor: " + novoValor + ".");
         }
+    }
+    
+    public void salvarMeusGastos () {
+    	try {
+    		
+    		bo.salvarMeusGastos(this.listaGastosMensais);
+    		bo.salvarHistoricoMeusGastos(this.listaHistoricoMeusGastos);
+    		
+		} catch (Exception e) {
+			enviaMensagem(FacesMessage.SEVERITY_ERROR, SumarioMensagem.ERRO, "Não salvo.");
+		}
+    	
+    	enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Registro salvo.");
     }
 
 	// GETTER AND SETTERS

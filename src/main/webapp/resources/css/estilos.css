@@ -71,16 +71,26 @@ h1, h2, h3, h4, h5, h6 {
 	vertical-align: top !important;
 }
 
+
+
 .columnSize70 {
 	width: 70%;
 }
 
-.columnSize30 {
-	width: 30%;
+.columnSize60 {
+	width: 50%;
 }
 
 .columnSize50 {
 	width: 50%;
+}
+
+.columnSize40 {
+	width: 30%;
+}
+
+.columnSize30 {
+	width: 30%;
 }
 
 .centralizaPanelGroup {
@@ -114,4 +124,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .ui-chart {
 	margin-bottom: 50px;
+}
+
+tfoot {
+	text-align: center;
 }

@@ -148,7 +148,16 @@
 							</h:panelGroup>
 						</p:panel>
 					</h:panelGrid>
+					
+					<f:facet name="footer">
+						<p:commandButton value="Salvar" icon="pi pi-save"
+							actionListener="#{meusGastosBean.salvarMeusGastos}"
+							update="msgs" style="margin-top:20px;"
+							styleClass="ui-button-success">
+						</p:commandButton>
+					</f:facet>
 				</h:panelGrid>
+
 			</p:panel>		
 
 		</h:form>

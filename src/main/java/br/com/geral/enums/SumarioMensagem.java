@@ -3,6 +3,7 @@ package br.com.geral.enums;
 public enum SumarioMensagem {
 	
     ERRO("Erro: "),
+    EDITADO("Editado: "),
     SUCESSO("Sucesso: "),
     EXCECAO("Exceção: "),
     ATENCAO("Atenção: "),

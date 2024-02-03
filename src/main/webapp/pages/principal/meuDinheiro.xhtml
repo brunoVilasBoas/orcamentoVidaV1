@@ -10,7 +10,7 @@
 		<h:form id="frmMeuDinheiro">
 			
 			<p:panel styleClass="centralizaPanel" style="min-width:700px">
-				<h:panelGrid layout="block" columns="2" styleClass="centralizaPanelGrid">
+				<h:panelGrid layout="block" columns="2" styleClass="centralizaPanelGrid" columnClasses="columnSize60, columnSize40">
 					<h:panelGrid layout="block" columns="1">
 						<p:panel id="pnlMeuDinheiro" layout="block">
 		
@@ -50,12 +50,6 @@
 								<p:dataTable id="dataTableMeuDinheiro" var="dinheiro"
 									editable="true" editMode="cell" size="small"
 									value="#{meuDinheiroBean.listaMeuDinheiro}">
-									
-		<!-- 							<f:facet name="header"> -->
-		<!-- 	 			       		 	<div align="center"> -->
-		<!-- 		 			            	<h:outputText value="Entrada" /> -->
-		<!-- 		 			            </div> -->
-		<!-- 	 			            </f:facet> -->
 		
 									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs"/>
 		
