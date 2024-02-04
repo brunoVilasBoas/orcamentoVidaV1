@@ -22,7 +22,7 @@
 							</f:facet>
 		
 							<h:panelGroup layout="block" style="width:100%;">
-								<p:toolbar>
+								<p:toolbar id="toolbarMeuDinheiro">
 									<p:toolbarGroup>
 										<p:inputText id="inputFonteDinheiro" value="#{meuDinheiroBean.fonteEntrada}" 
 											placeholder="Fonte" size="12"/>
@@ -39,7 +39,7 @@
 									<p:toolbarGroup align="right">
 										<p:commandButton value="Add" icon="pi pi-plus"
 											actionListener="#{meuDinheiroBean.adicionarNovaFonte}"
-											update=":frmMeuDinheiro:dataTableMeuDinheiro, msgs"
+											update=":frmMeuDinheiro:dataTableMeuDinheiro, :frmMeuDinheiro:toolbarMeuDinheiro, msgs"
 											process="@this,inputFonteDinheiro,
 													 inputValorDinheiro,inputDisponibilidadeDinheiro"
 											styleClass="ui-button-success" style="margin-left: .5rem;">
@@ -123,7 +123,7 @@
 							</f:facet>
 							
 							<h:panelGroup layout="block">
-								<p:toolbar>
+								<p:toolbar id="toolbarMeusRendimentos">
 									<p:toolbarGroup>
 										<p:inputText id="inputFonteGanho" value="#{meuDinheiroBean.fonteEntrada}" 
 											placeholder="Fonte" size="12"/>
@@ -136,7 +136,7 @@
 									<p:toolbarGroup align="right">
 										<p:commandButton value="Add" icon="pi pi-plus"
 											actionListener="#{meuDinheiroBean.adicionarNovoRendimento}"
-											update=":frmMeuDinheiro:dataTableMeusGanhos, msgs"
+											update=":frmMeuDinheiro:dataTableMeusGanhos, :frmMeuDinheiro:toolbarMeusRendimentos, msgs"
 											process="@this,inputFonteGanho,inputValorGanho"
 											styleClass="ui-button-success" style="margin-left: .5rem;">
 										</p:commandButton>
@@ -185,7 +185,7 @@
 		                    				<p:column colspan="2" style="text-align:right" footerText="Rendimento Total:"/>
 		                    				<p:column style="text-align:right">
 						                        <f:facet name="footer">
-						                            <h:outputText value="#{meuDinheiroBean.dinheiroDisponivel}">
+						                            <h:outputText value="#{meuDinheiroBean.ganhosMensais}">
 						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
 						                            </h:outputText>
 						                        </f:facet>
@@ -267,6 +267,14 @@
 							</h:panelGroup>
 						</p:panel>
 					</h:panelGrid>
+
+					<f:facet name="footer">
+						<p:commandButton value="Salvar" icon="pi pi-save"
+							actionListener="#{meuDinheiroBean.salvarMeuDinheiro}" update="msgs"
+							style="margin-top:20px;" styleClass="ui-button-success">
+						</p:commandButton>
+					</f:facet>
+
 				</h:panelGrid>
 			</p:panel>
 		</h:form>

@@ -31,7 +31,7 @@ public class MeusGastosBO {
 		String[] cabecalho = {"id", "fonte", "gastoPessoal", "ativo", "valor"};
 		
 		
-        Writer writer = Files.newBufferedWriter(Paths.get("MeusGastos.csv"));
+        Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeusGastos.csv"));
         this.csvWriter = new CSVWriter(writer);
         
         List<String[]> linhas = new ArrayList<>();
@@ -57,7 +57,7 @@ public class MeusGastosBO {
 		String[] cabecalho = {"id", "data", "valorGastoMes"};
 		
 		
-        Writer writer = Files.newBufferedWriter(Paths.get("MeuHistoricoGastos.csv"));
+        Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuHistoricoGastos.csv"));
         this.csvWriter = new CSVWriter(writer);
         
         List<String[]> linhas = new ArrayList<>();
@@ -80,7 +80,7 @@ public class MeusGastosBO {
 	
 	public List<GastosMensais> retornarMeusGastos() throws IOException, CsvException{
 		
-        Reader reader = Files.newBufferedReader(Paths.get("MeusGastos.csv"));
+        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeusGastos.csv"));
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         
         List<String[]> registros = csvReader.readAll();
@@ -101,7 +101,7 @@ public class MeusGastosBO {
 	
 	public List<HistoricoMeusGastos> retornarHistoricoMeusGastos() throws Exception{
 		try {	
-	        Reader reader = Files.newBufferedReader(Paths.get("MeuHistoricoGastos.csv"));
+	        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuHistoricoGastos.csv"));
 	        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
 	        
 	        List<String[]> registros = csvReader.readAll();

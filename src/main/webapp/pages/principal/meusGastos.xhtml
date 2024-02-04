@@ -20,7 +20,7 @@
 							</f:facet>
 					
 							<h:panelGroup layout="block" style="width:100%;">
-								<p:toolbar>
+								<p:toolbar id="toolbarMeusGastos">
 									<p:toolbarGroup>
 										<p:inputText id="inputFonte" value="#{meusGastosBean.fonteEntrada}" 
 											placeholder="Fonte" size="12"/>
@@ -32,7 +32,7 @@
 									<p:toolbarGroup align="right">
 										<p:commandButton value="Add" icon="pi pi-plus"
 											actionListener="#{meusGastosBean.adicionarNovaFonte}"
-											update=":frmMeusGastos:dataTableMeusGastos, msgs"
+											update=":frmMeusGastos:dataTableMeusGastos, :frmMeusGastos:toolbarMeusGastos, msgs"
 											styleClass="ui-button-success" style="margin-left: .5rem;">
 										</p:commandButton>
 									</p:toolbarGroup>

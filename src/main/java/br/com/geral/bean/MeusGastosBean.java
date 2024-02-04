@@ -25,7 +25,7 @@ public class MeusGastosBean extends GenericBean {
 	
 	private String fonteEntrada;
 	private BigDecimal valorEntrada;
-	private SimNaoEnum disponibilidadeEntrada;
+	private SimNaoEnum ativoEntrada;
 	
 	public MeusGastosBean() {
 		super();
@@ -52,13 +52,22 @@ public class MeusGastosBean extends GenericBean {
 			return;
 		}
 		
-		if(this.disponibilidadeEntrada == null) {
-			this.disponibilidadeEntrada = SimNaoEnum.N;
+		if(this.ativoEntrada == null) {
+			this.ativoEntrada = SimNaoEnum.S;
 		}
+		Long idRegistroNovo = (long) listaGastosMensais.size()+1;
 		
-		this.listaGastosMensais.add(new GastosMensais(null, this.fonteEntrada, SimNaoEnum.N, this.disponibilidadeEntrada, this.valorEntrada));
+		this.listaGastosMensais.add(new GastosMensais(idRegistroNovo, this.fonteEntrada, SimNaoEnum.N, this.ativoEntrada, this.valorEntrada));
+		limparSelecao();
 		enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Linha adicionada.");
 	}
+	
+    public void limparSelecao() {
+    	this.fonteEntrada = new String();
+    	this.ativoEntrada = null;
+    	this.valorEntrada = BigDecimal.ZERO;
+    	
+    }
 	
 	public void removerItem() {
 		this.listaGastosMensais.remove(this.fonteSelecionada);
@@ -80,12 +89,12 @@ public class MeusGastosBean extends GenericBean {
     		
     		bo.salvarMeusGastos(this.listaGastosMensais);
     		bo.salvarHistoricoMeusGastos(this.listaHistoricoMeusGastos);
-    		
+        	
+        	enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Registro salvo.");
+        	
 		} catch (Exception e) {
 			enviaMensagem(FacesMessage.SEVERITY_ERROR, SumarioMensagem.ERRO, "Não salvo.");
 		}
-    	
-    	enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Registro salvo.");
     }
 
 	// GETTER AND SETTERS

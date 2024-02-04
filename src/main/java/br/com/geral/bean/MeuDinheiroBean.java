@@ -9,6 +9,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.CellEditEvent;
 
+import br.com.geral.bo.MeuDinheiroBO;
 import br.com.geral.enums.SimNaoEnum;
 import br.com.geral.enums.SumarioMensagem;
 import br.com.geral.model.MeuDinheiro;
@@ -21,13 +22,23 @@ public class MeuDinheiroBean extends GenericBean {
 	private MeuDinheiro fonteSelecionada;
 	private RendimentosMensais rendimentoSelecionada;
 	
+	private MeuDinheiroBO bo;
+	
 	private String fonteEntrada;
 	private BigDecimal valorEntrada = BigDecimal.ZERO;
 	private SimNaoEnum disponibilidadeEntrada;
 	
 	@PostConstruct
 	public void init(){
-		CargaListas();
+		this.bo = new MeuDinheiroBO();
+		
+		try {
+			this.setListaMeuDinheiro(bo.retornarMeuDinheiro());
+			this.setListaHistoricoMeuDinheiro(bo.retornarHistoricoMeuDinheiro());
+			this.setListaRendimentosMensais(bo.retornarMeusRendimentos());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void adicionarNovaFonte() {
@@ -41,7 +52,9 @@ public class MeuDinheiroBean extends GenericBean {
 			this.disponibilidadeEntrada = SimNaoEnum.N;
 		}
 		
-		this.listaMeuDinheiro.add(new MeuDinheiro(null, this.fonteEntrada, this.disponibilidadeEntrada, this.valorEntrada));
+		Long idRegistroNovo = (long) listaMeuDinheiro.size()+1;
+		
+		this.listaMeuDinheiro.add(new MeuDinheiro(idRegistroNovo, this.fonteEntrada, this.disponibilidadeEntrada, this.valorEntrada));
 		
 		limparSelecao();
 		
@@ -60,7 +73,8 @@ public class MeuDinheiroBean extends GenericBean {
 			return;
 		}
 		
-		this.listaRendimentosMensais.add(new RendimentosMensais(null, this.fonteEntrada, SimNaoEnum.S, this.valorEntrada));
+		Long idRegistroNovo = (long) listaRendimentosMensais.size()+1;
+		this.listaRendimentosMensais.add(new RendimentosMensais(idRegistroNovo, this.fonteEntrada, SimNaoEnum.S, this.valorEntrada));
 		
 		limparSelecao();
 		
@@ -86,6 +100,20 @@ public class MeuDinheiroBean extends GenericBean {
     	this.valorEntrada = BigDecimal.ZERO;
     	this.disponibilidadeEntrada = null;
     	
+    }
+    
+    public void salvarMeuDinheiro () {
+    	try {
+    		
+    		bo.salvarMeuDinheiro(this.listaMeuDinheiro);
+    		bo.salvarHistoricoMeuDinheiro(this.listaHistoricoMeuDinheiro);
+    		bo.salvarMeusRendimentos(this.listaRendimentosMensais);
+    		
+    		enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Registro salvo.");
+    		
+		} catch (Exception e) {
+			enviaMensagem(FacesMessage.SEVERITY_ERROR, SumarioMensagem.ERRO, "Não salvo.");
+		}
     }
 
 	// GETTER AND SETTERS
