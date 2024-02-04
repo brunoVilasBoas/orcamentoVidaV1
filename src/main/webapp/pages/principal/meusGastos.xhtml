@@ -51,8 +51,20 @@
 										<h:outputText value="#{gasto.fonte}" />
 									</p:column>
 									
-									<p:column headerText="Gasto Pessoal"  style="text-align:center;width:25%;">
-										<h:outputText value="#{gasto.gastoPessoal.descricao}" />
+									<p:column headerText="Gasto Pessoal"  style="text-align:center;width:15%;">
+										<h:outputText />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{gasto.gastoPessoal.descricao}" 
+											styleClass="gasto-badge gastoPessoal-#{gasto.gastoPessoal.descResumida.toLowerCase()}"/>
+											</f:facet>
+											<f:facet name="input">
+												<p:selectOneMenu id="optionGastoPessoal" value="#{gasto.gastoPessoal}">
+													<f:selectItem itemLabel="Sim" itemValue="S"/>
+													<f:selectItem itemLabel="Não" itemValue="N"/>
+												</p:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									
 									<p:column headerText="Ativo"  style="text-align:center; width:10%;">
@@ -69,7 +81,7 @@
 										</p:cellEditor>
 									</p:column>
 
-									<p:column headerText="Valor" style="text-align:right; width:20%;">
+									<p:column headerText="Valor" style="text-align:right; width:10%;">
 										<p:cellEditor>
 											<f:facet name="output">
 												<h:outputText value="#{gasto.valor}">
@@ -102,8 +114,21 @@
 						                        </f:facet>
 						                    </p:column>
 						                    <p:column />
-		                    			</p:row>	
+		                    			</p:row>
 									</p:columnGroup>
+									<f:facet name="footer">
+										<h:panelGroup id="footergroup" styleClass="centralizaPanelGroup">
+											<h:outputText value="Gastos com a casa: " styleClass="gasto-badge gastoCasa-foot"/>
+											<h:outputText value="#{meusGastosBean.gastosMensais}">
+												<f:convertNumber type="currency" currencySymbol="R$ " />
+											</h:outputText>
+		
+											<h:outputText value="Gastos Pessoais: " styleClass="gasto-badge gastoPessoal-foot"/>
+											<h:outputText value="#{meusGastosBean.gastosMensais}">
+												<f:convertNumber type="currency" currencySymbol="R$ " />
+											</h:outputText>
+										</h:panelGroup>
+									</f:facet>	
 								</p:dataTable>
 							</h:panelGroup>
 		

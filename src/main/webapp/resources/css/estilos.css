@@ -96,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 .centralizaPanelGroup {
 	margin: auto;
 	width: 90%;
-	border: 1px solid #55688a;
+	border: 0px solid #55688a;
 	padding: 5px;
 }
 
@@ -128,4 +128,28 @@ h1, h2, h3, h4, h5, h6 {
 
 tfoot {
 	text-align: center;
+}
+
+#footergroup span{
+	margin:10px;
+}
+
+.gasto-badge.gastoPessoal-n, .gasto-badge.gastoPessoal-foot{
+    background-color: #ffd8b2;
+    color: #805b36;
+} 
+
+.gasto-badge.gastoPessoal-s, .gasto-badge.gastoCasa-foot{
+    background-color: #b3e5fc;
+    color: #23547b;
+}
+
+.gasto-badge {
+	border-radius: 2px;
+    padding: 0.25em 0.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    margin: 10px;
 }

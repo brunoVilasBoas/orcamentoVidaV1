@@ -91,7 +91,7 @@ public class MeuDinheiroBean extends GenericBean {
         Object novoValor = event.getNewValue();
 
         if (novoValor != null && !novoValor.equals(antigoValor)) {
-            enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Campo editado - antigo valor: " + antigoValor + ", novo valor:" + novoValor + ";");
+            enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Campo editado - antigo valor: " + antigoValor + ", novo valor: " + novoValor + ";");
         }
     }
     
