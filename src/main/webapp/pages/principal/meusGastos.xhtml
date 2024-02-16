@@ -173,6 +173,24 @@
 									</p:column>
 
 								</p:dataTable>
+								<p:toolbar id="toolbarMeuHistoricoGastos">
+									<p:toolbarGroup>
+										<p:inputMask value="#{meusGastosBean.dataHistoricoEntrada}" mask="99/99/9999" size="6">
+											<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+										</p:inputMask>
+		
+										<p:inputNumber value="#{meusGastosBean.valorTotalMesEntrada}" size="10" label="valor" symbol="R$ " 
+											decimalSeparator="," thousandSeparator="." style="margin-left: .5rem;"/>
+									</p:toolbarGroup>
+									
+									<p:toolbarGroup align="right">
+										<p:commandButton value="Add" icon="pi pi-plus"
+											actionListener="#{meusGastosBean.adicionarNovoHistorico}"
+											update=":frmMeusGastos:dataTableHistoricoMeusGastos,:frmMeusGastos:toolbarMeuHistoricoGastos, msgs"
+											styleClass="ui-button-success" style="margin-left: .5rem;">
+										</p:commandButton>
+									</p:toolbarGroup>
+								</p:toolbar>
 							
 							</h:panelGroup>
 						</p:panel>

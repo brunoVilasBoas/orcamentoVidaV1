@@ -2,6 +2,7 @@ package br.com.geral.bean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -14,6 +15,7 @@ import br.com.geral.bo.MeusGastosBO;
 import br.com.geral.enums.SimNaoEnum;
 import br.com.geral.enums.SumarioMensagem;
 import br.com.geral.model.GastosMensais;
+import br.com.geral.model.HistoricoMeusGastos;
 
 @ManagedBean
 @ViewScoped
@@ -27,6 +29,9 @@ public class MeusGastosBean extends GenericBean {
 	private BigDecimal valorEntrada;
 	private SimNaoEnum ativoEntrada;
 	
+	private Date dataHistoricoEntrada;
+	private BigDecimal valorTotalMesEntrada;
+	
 	public MeusGastosBean() {
 		super();
 		this.bo = new MeusGastosBO();
@@ -35,6 +40,8 @@ public class MeusGastosBean extends GenericBean {
 	@PostConstruct
 	public void init(){
 		this.valorEntrada = BigDecimal.ZERO;
+		this.valorTotalMesEntrada = BigDecimal.ZERO;
+		
 		this.listaGastosMensais = new ArrayList<GastosMensais>();
 		
 		try {
@@ -62,10 +69,29 @@ public class MeusGastosBean extends GenericBean {
 		enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Linha adicionada.");
 	}
 	
+	public void adicionarNovoHistorico() {
+		
+		if(this.dataHistoricoEntrada == null) {
+			enviaMensagem(FacesMessage.SEVERITY_WARN, SumarioMensagem.ATENCAO, "Necessário adicionar data.");
+			return;
+		}
+		if(this.valorTotalMesEntrada == null) {
+			this.valorTotalMesEntrada = BigDecimal.ZERO;
+		}
+		
+		Long idRegistroNovo = (long) listaHistoricoMeusGastos.size()+1;
+		
+		this.listaHistoricoMeusGastos.add(new HistoricoMeusGastos(idRegistroNovo, this.dataHistoricoEntrada, this.valorTotalMesEntrada ));
+		limparSelecao();
+		enviaMensagem(FacesMessage.SEVERITY_INFO, SumarioMensagem.SUCESSO, "Linha adicionada.");
+	}
+	
     public void limparSelecao() {
     	this.fonteEntrada = new String();
     	this.ativoEntrada = null;
     	this.valorEntrada = BigDecimal.ZERO;
+    	this.dataHistoricoEntrada = null;
+    	this.valorTotalMesEntrada = BigDecimal.ZERO;
     	
     }
 	
@@ -123,6 +149,21 @@ public class MeusGastosBean extends GenericBean {
 	public void setValorEntrada(BigDecimal valorEntrada) {
 		this.valorEntrada = valorEntrada;
 	}
-	
+
+	public Date getDataHistoricoEntrada() {
+		return dataHistoricoEntrada;
+	}
+
+	public void setDataHistoricoEntrada(Date dataHistoricoEntrada) {
+		this.dataHistoricoEntrada = dataHistoricoEntrada;
+	}
+
+	public BigDecimal getValorTotalMesEntrada() {
+		return valorTotalMesEntrada;
+	}
+
+	public void setValorTotalMesEntrada(BigDecimal valorTotalMesEntrada) {
+		this.valorTotalMesEntrada = valorTotalMesEntrada;
+	}
 	
 }

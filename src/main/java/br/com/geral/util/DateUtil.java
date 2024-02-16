@@ -20,4 +20,20 @@ public class DateUtil {
 
 		return formatter.parse(data);
 	}
+	
+
+    public static boolean validarDataBrasileira(String data) {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        formato.setLenient(false); // Impede datas inválidas, como 31 de fevereiro
+
+        try {
+            @SuppressWarnings("unused")
+			Date dataValidada = formato.parse(data);
+            // Se a data foi parseada com sucesso, então é uma data válida
+            return true;
+        } catch (ParseException e) {
+            // Se ocorrer uma exceção, a data é inválida
+            return false;
+        }
+    }
 }
