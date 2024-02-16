@@ -17,12 +17,14 @@ import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.model.charts.optionconfig.title.Title;
 
 import br.com.geral.model.HistoricoMeuDinheiro;
+import br.com.geral.model.HistoricoMeusGastos;
 
 @ManagedBean
 @ViewScoped
 public class TelaInicioBean extends GenericBean {
 	
 	private LineChartModel lineModelRendimentosMensais;
+	private LineChartModel lineModelGastosMensais;
 	
 	public TelaInicioBean() {
 		super();
@@ -34,6 +36,7 @@ public class TelaInicioBean extends GenericBean {
 		CargaListas();
 		
 		criarLineModelRendimentosMensais();
+		criarLineModelGastosMensais();
 		
 		PrimeFaces.current().executeScript("mudarCor("+getRendimentosMensais()+")");
 	}
@@ -44,7 +47,6 @@ public class TelaInicioBean extends GenericBean {
 
         LineChartDataSet dataSetValorDisponivel = new LineChartDataSet();
         LineChartDataSet dataSetValorTotal = new LineChartDataSet();
-        
         
         List<Object> valorDisponivel = new ArrayList<>();
         List<Object> valorTotal = new ArrayList<>();
@@ -85,6 +87,42 @@ public class TelaInicioBean extends GenericBean {
         lineModelRendimentosMensais.setData(data);
     }
     
+    public void criarLineModelGastosMensais() {
+    	this.lineModelGastosMensais = new LineChartModel();
+        ChartData data = new ChartData();
+
+        LineChartDataSet dataSetGastoTotal = new LineChartDataSet();
+        
+        
+        List<Object> valorGasto = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        
+        for(HistoricoMeusGastos h : this.listaHistoricoMeusGastos) {
+        	valorGasto.add(h.getValorGastoMes());
+        	labels.add(formataDataPadraoBrasileiro(h.getData()));
+        }
+        
+        dataSetGastoTotal.setData(valorGasto);
+        dataSetGastoTotal.setFill(false);
+        dataSetGastoTotal.setLabel("Valor gasto no mês");
+        dataSetGastoTotal.setBorderColor("rgba(234, 67, 53)");
+        dataSetGastoTotal.setBackgroundColor("rgba(234, 67, 53)");
+        dataSetGastoTotal.setTension(0.1);
+        
+        data.setLabels(labels);
+        data.addChartDataSet(dataSetGastoTotal);
+   
+        //Options
+        LineChartOptions options = new LineChartOptions();
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Gastos Mensais");
+        options.setTitle(title);
+
+        lineModelGastosMensais.setOptions(options);
+        lineModelGastosMensais.setData(data);
+    }
+    
 	/**
 	 * Formata a data informada para o padrão brasileiro ou seja dd/MM/yyyy
 	 * 
@@ -107,6 +145,16 @@ public class TelaInicioBean extends GenericBean {
 
 	public void setLineModelRendimentosMensais(LineChartModel lineModelRendimentosMensais) {
 		this.lineModelRendimentosMensais = lineModelRendimentosMensais;
-	}	
+	}
+
+	public LineChartModel getLineModelGastosMensais() {
+		return lineModelGastosMensais;
+	}
+
+	public void setLineModelGastosMensais(LineChartModel lineModelGastosMensais) {
+		this.lineModelGastosMensais = lineModelGastosMensais;
+	}
+	
+	
 	
 }
