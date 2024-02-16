@@ -38,7 +38,9 @@
 									</p:toolbarGroup>
 								</p:toolbar>
 								
-								<p:remoteCommand name="refreshFooter" update="dataTableMeusGastos:idTotalGastosMensais"/>
+								<p:remoteCommand name="refreshFooter" update="dataTableMeusGastos:idTotalGastosMensais, 
+																			  dataTableMeusGastos:idGastosCasaMensais,
+																			  dataTableMeusGastos:idGastosPessoaisMensais"/>
 								
 								<p:dataTable id="dataTableMeusGastos" var="gasto"
 									editable="true" editMode="cell" size="small" partialUpdate="false"
@@ -81,7 +83,7 @@
 										</p:cellEditor>
 									</p:column>
 
-									<p:column headerText="Valor" style="text-align:right; width:10%;">
+									<p:column headerText="Valor" style="text-align:right; width:11%;">
 										<p:cellEditor>
 											<f:facet name="output">
 												<h:outputText value="#{gasto.valor}">
@@ -118,15 +120,17 @@
 									</p:columnGroup>
 									<f:facet name="footer">
 										<h:panelGroup id="footergroup" styleClass="centralizaPanelGroup">
+											
+											<h:outputText value="Gastos Pessoais: " styleClass="gasto-badge gastoPessoal-foot"/>
+											<h:outputText id="idGastosPessoaisMensais" value="#{meusGastosBean.gastosPessoaisMensais}">
+												<f:convertNumber type="currency" currencySymbol="R$ " />
+											</h:outputText>
+										
 											<h:outputText value="Gastos com a casa: " styleClass="gasto-badge gastoCasa-foot"/>
-											<h:outputText value="#{meusGastosBean.gastosMensais}">
+											<h:outputText id="idGastosCasaMensais" value="#{meusGastosBean.gastosCasaMensais}">
 												<f:convertNumber type="currency" currencySymbol="R$ " />
 											</h:outputText>
 		
-											<h:outputText value="Gastos Pessoais: " styleClass="gasto-badge gastoPessoal-foot"/>
-											<h:outputText value="#{meusGastosBean.gastosMensais}">
-												<f:convertNumber type="currency" currencySymbol="R$ " />
-											</h:outputText>
 										</h:panelGroup>
 									</f:facet>	
 								</p:dataTable>

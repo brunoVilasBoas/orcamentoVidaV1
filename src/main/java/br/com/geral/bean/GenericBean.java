@@ -162,6 +162,11 @@ public abstract class GenericBean {
 		return new BigDecimal(somatorio[0]);
 	}
 	
+	public BigDecimal getRendimentosMensais() {
+		return getGanhosMensais().subtract(getGastosMensais());
+	}
+	
+	
 	public BigDecimal getGastosMensais() {
         if(listaGastosMensais == null || listaGastosMensais.isEmpty()) {
         	return BigDecimal.ZERO;
@@ -172,10 +177,31 @@ public abstract class GenericBean {
 
 		return new BigDecimal(somatorio[0]);
 	}
-	
-	public BigDecimal getRendimentosMensais() {
-		return getGanhosMensais().subtract(getGastosMensais());
-	}
 
+	
+	public BigDecimal getGastosCasaMensais() {
+        if(listaGastosMensais == null || listaGastosMensais.isEmpty()) {
+        	return BigDecimal.ZERO;
+        }
+		double[] somatorio = { 0.0 };
+
+        listaGastosMensais.forEach(objeto -> somatorio[0] += (objeto.getAtivo().isSim()
+        													  && objeto.getGastoPessoal().isNao()) ? objeto.getValor().doubleValue() : 0);
+
+		return new BigDecimal(somatorio[0]);
+	}
+	
+	
+	public BigDecimal getGastosPessoaisMensais() {
+        if(listaGastosMensais == null || listaGastosMensais.isEmpty()) {
+        	return BigDecimal.ZERO;
+        }
+		double[] somatorio = { 0.0 };
+
+        listaGastosMensais.forEach(objeto -> somatorio[0] += (objeto.getAtivo().isSim() 
+        													  && objeto.getGastoPessoal().isSim()) ? objeto.getValor().doubleValue() : 0);
+
+		return new BigDecimal(somatorio[0]);
+	}
 
 }

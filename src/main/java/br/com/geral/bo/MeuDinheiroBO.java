@@ -54,7 +54,7 @@ public class MeuDinheiroBO {
 	
 	public List<HistoricoMeuDinheiro> salvarHistoricoMeuDinheiro(List<HistoricoMeuDinheiro> listaHistoricoMeuDinheiro) throws IOException, Exception {
 		
-		String[] cabecalho = {"id", "data", "valorGastoMes"};
+		String[] cabecalho = {"id", "data", "valorDisponivelMes", "valorTotalMes"};
 		
 		
         Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuHistoricoDinheiro.csv"));

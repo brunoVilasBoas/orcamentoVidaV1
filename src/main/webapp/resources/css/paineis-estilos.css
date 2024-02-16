@@ -1,12 +1,15 @@
 @charset "ISO-8859-1";
 
-
 .pnlGrdFormatacao {
-	border-spacing: 40px 20px; 
-	border-collapse: separate; 
-	text-align:left;
+	border-spacing: 40px 20px;
+	border-collapse: separate;
+	text-align: left;
 }
 
-.pnlGrdFormatacao label {
+.pnlGrdFormatacao label, 
+.pnlGrdFormatacao div, 
+.pnlGrdFormatacao td {
+	font-family: tahoma, arial, verdana, helvetica;
 	font-weight: bold;
+	font-size: 16px;
 }

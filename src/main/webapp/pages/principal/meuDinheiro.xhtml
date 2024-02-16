@@ -46,15 +46,27 @@
 										</p:commandButton>
 									</p:toolbarGroup>
 								</p:toolbar>
-		
+								
+								<p:remoteCommand name="refreshFooterMeuDinheiro" update="dataTableMeuDinheiro:idDinheiroDisponivel,
+																			  			 dataTableMeuDinheiro:idDinheiroTotal"/>
+								
 								<p:dataTable id="dataTableMeuDinheiro" var="dinheiro"
 									editable="true" editMode="cell" size="small"
 									value="#{meuDinheiroBean.listaMeuDinheiro}">
 		
-									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs"/>
+									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs,dataTableMeuDinheiro"
+											oncomplete="refreshFooterMeuDinheiro();"/>
 		
 									<p:column headerText="Fonte">
-										<h:outputText value="#{dinheiro.fonte}" />
+										<p:cellEditor>
+											<f:facet name="output">									
+												<h:outputText value="#{dinheiro.fonte}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText id="inputFonteDinheiro" value="#{dinheiro.fonte}" 
+													placeholder="Fonte" />
+											</f:facet>
+										</p:cellEditor>	
 									</p:column>
 									
 									<p:column headerText="Disponível"  style="text-align:center">
@@ -99,7 +111,7 @@
 		                    				<p:column colspan="2" style="text-align:right" footerText="Total Disponível:"/>
 		                    				<p:column style="text-align:right">
 						                        <f:facet name="footer">
-						                            <h:outputText value="#{meuDinheiroBean.dinheiroDisponivel}">
+						                            <h:outputText id="idDinheiroDisponivel" value="#{meuDinheiroBean.dinheiroDisponivel}">
 						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
 						                            </h:outputText>
 						                        </f:facet>
@@ -110,7 +122,7 @@
 		                    				<p:column colspan="2" style="text-align:right" footerText="Total:"/>
 		                    				<p:column style="text-align:right">
 						                        <f:facet name="footer">
-						                            <h:outputText value="#{meuDinheiroBean.totalDinheiro}">
+						                            <h:outputText id="idDinheiroTotal" value="#{meuDinheiroBean.totalDinheiro}">
 						                                <f:convertNumber type="currency" currencySymbol="R$ "/>
 						                            </h:outputText>
 						                        </f:facet>
@@ -157,10 +169,18 @@
 									editable="true" editMode="cell" size="small"
 									value="#{meuDinheiroBean.listaRendimentosMensais}">
 		
-									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs"/>
+									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="dataTableMeusGanhos,msgs"/>
 		
 									<p:column headerText="Fonte">
-										<h:outputText value="#{rendimento.fonte}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{rendimento.fonte}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText id="inputFonteGanho" value="#{rendimento.fonte}" 
+													placeholder="Fonte"/>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									
 									<p:column headerText="Ativo" style="text-align:center">
@@ -240,9 +260,18 @@
 									<p:ajax event="cellEdit" listener="#{meuDinheiroBean.onCellEdit}" update="msgs"/>
 		
 									<p:column headerText="Data">
-										<h:outputText value="#{historico.data}">
-											<f:convertDateTime pattern="dd/MM/20yy" locale="pt_BR"/>
-										</h:outputText>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{historico.data}">
+													<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputMask value="#{historico.data}" mask="99/99/9999" >
+													<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+												</p:inputMask>
+											</f:facet>
+										</p:cellEditor>
 									</p:column>
 									
 									<p:column headerText="Valor Disponivel do Mês" style="text-align:right">
