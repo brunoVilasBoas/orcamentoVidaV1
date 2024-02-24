@@ -50,11 +50,18 @@
 										process="optionAtivo" oncomplete="refreshFooter();" />
 		
 									<p:column headerText="Fonte">
-										<h:outputText value="#{gasto.fonte}" />
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{gasto.fonte}" />
+											</f:facet>
+											<f:facet name="input" >
+												<p:inputText id="inputFonteGasto" value="#{gasto.fonte}" 
+													placeholder="Fonte"/>
+											</f:facet>
+										</p:cellEditor>	
 									</p:column>
 									
 									<p:column headerText="Gasto Pessoal"  style="text-align:center;width:15%;">
-										<h:outputText />
 										<p:cellEditor>
 											<f:facet name="output">
 												<h:outputText value="#{gasto.gastoPessoal.descricao}" 
@@ -153,9 +160,18 @@
 									<p:ajax event="cellEdit" listener="#{meusGastosBean.onCellEdit}" update="msgs"/>
 		
 									<p:column headerText="Data">
-										<h:outputText value="#{historico.data}">
-											<f:convertDateTime pattern="dd/MM/20yy" locale="pt_BR"/>
-										</h:outputText>
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{historico.data}">
+													<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"/>
+												</h:outputText>
+											</f:facet>
+											<f:facet name="input">
+												<p:inputMask value="#{historico.data}" mask="99/99/9999" >
+													<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+												</p:inputMask>
+											</f:facet>
+										</p:cellEditor>	
 									</p:column>
 									
 									<p:column headerText="Valor Gasto no Mês" style="text-align:right">
