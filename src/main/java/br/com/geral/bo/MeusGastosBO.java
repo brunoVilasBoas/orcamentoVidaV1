@@ -1,10 +1,5 @@
 package br.com.geral.bo;
 
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -12,26 +7,39 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
 
 import br.com.geral.enums.SimNaoEnum;
 import br.com.geral.model.GastosMensais;
 import br.com.geral.model.HistoricoMeusGastos;
 import br.com.geral.util.DateUtil;
+import br.com.geral.util.ImportUtil;
 
 public class MeusGastosBO {
 
 	private CSVWriter csvWriter;
+	
+	private String pathURL;
 
-
+	public MeusGastosBO() {
+		setPathURL(ImportUtil.retornarCaminhoCSV());
+	}
+	
+	
 	public void salvarMeusGastos(List<GastosMensais> listaGastosMensais) throws IOException, Exception {
 		
-		String[] cabecalho = {"id", "fonte", "gastoPessoal", "ativo", "valor"};
+		String[] cabecalho = {"id", "fonte", "gastoPessoal", "ativo", "dataVencimento", "pago", "valor"};
 		
 		
-        Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeusGastos.csv"));
+        Writer writer = Files.newBufferedWriter(Paths.get(pathURL + "MeusGastos.csv"));
         this.csvWriter = new CSVWriter(writer);
         
         List<String[]> linhas = new ArrayList<>();
@@ -41,6 +49,8 @@ public class MeusGastosBO {
         							g.getFonte(),
         							g.getGastoPessoal().getdescResumida(),
         							g.getAtivo().getdescResumida(),
+        							DateUtil.dataFormatadaBr(g.getDataVencimento()),
+        							g.getPago().getdescResumida(),
         							g.getValor().toString()});
         }
         
@@ -57,7 +67,7 @@ public class MeusGastosBO {
 		String[] cabecalho = {"id", "data", "valorGastoMes"};
 		
 		
-        Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuHistoricoGastos.csv"));
+        Writer writer = Files.newBufferedWriter(Paths.get(pathURL + "MeuHistoricoGastos.csv"));
         this.csvWriter = new CSVWriter(writer);
         
         List<String[]> linhas = new ArrayList<>();
@@ -78,9 +88,9 @@ public class MeusGastosBO {
 		
 	}
 	
-	public List<GastosMensais> retornarMeusGastos() throws IOException, CsvException{
+	public List<GastosMensais> retornarMeusGastos() throws IOException, CsvException, NumberFormatException, ParseException{
 		
-        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeusGastos.csv"));
+        Reader reader = Files.newBufferedReader(Paths.get(pathURL + "MeusGastos.csv"));
         CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
         
         List<String[]> registros = csvReader.readAll();
@@ -92,7 +102,9 @@ public class MeusGastosBO {
         									  registro[1].toString(),
         									  SimNaoEnum.convertStringSN(registro[2]),
         									  SimNaoEnum.convertStringSN(registro[3]),
-        									  new BigDecimal(registro[4])));
+        									  DateUtil.stringParaDate(registro[4].toString()),
+        									  SimNaoEnum.convertStringSN(registro[5]),
+        									  new BigDecimal(registro[6])));
         }
         
         return listaGastos;
@@ -101,7 +113,7 @@ public class MeusGastosBO {
 	
 	public List<HistoricoMeusGastos> retornarHistoricoMeusGastos() throws Exception{
 		try {	
-	        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuHistoricoGastos.csv"));
+	        Reader reader = Files.newBufferedReader(Paths.get(pathURL + "MeuHistoricoGastos.csv"));
 	        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
 	        
 	        List<String[]> registros = csvReader.readAll();
@@ -122,6 +134,16 @@ public class MeusGastosBO {
 			
 			return salvarHistoricoMeusGastos(listaHistoricoGastos);
 		}
+	}
+
+
+	public String getPathURL() {
+		return pathURL;
+	}
+
+
+	public void setPathURL(String pathURL) {
+		this.pathURL = pathURL;
 	}
 
 }

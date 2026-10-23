@@ -20,18 +20,24 @@ import br.com.geral.model.HistoricoMeuDinheiro;
 import br.com.geral.model.MeuDinheiro;
 import br.com.geral.model.RendimentosMensais;
 import br.com.geral.util.DateUtil;
+import br.com.geral.util.ImportUtil;
 
 public class MeuDinheiroBO {
 
 	private CSVWriter csvWriter;
+	
+	private String pathURL;
 
+	public MeuDinheiroBO() {
+		pathURL = ImportUtil.retornarCaminhoCSV();
+	}
 
 	public List<MeuDinheiro> salvarMeuDinheiro(List<MeuDinheiro> listaMeuDinheiro) throws IOException, Exception {
 		
 		String[] cabecalho = {"id", "fonte", "disponivel", "valor"};
 		
 		
-        Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuDinheiro.csv"));
+        Writer writer = Files.newBufferedWriter(Paths.get(pathURL + "MeuDinheiro.csv"));
         this.csvWriter = new CSVWriter(writer);
         
         List<String[]> linhas = new ArrayList<>();
@@ -57,7 +63,7 @@ public class MeuDinheiroBO {
 		String[] cabecalho = {"id", "data", "valorDisponivelMes", "valorTotalMes"};
 		
 		
-        Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuHistoricoDinheiro.csv"));
+        Writer writer = Files.newBufferedWriter(Paths.get(pathURL + "MeuHistoricoDinheiro.csv"));
         this.csvWriter = new CSVWriter(writer);
         
         List<String[]> linhas = new ArrayList<>();
@@ -84,7 +90,7 @@ public class MeuDinheiroBO {
 		String[] cabecalho = {"id", "fonte", "ativo", "valor"};
 		
 		
-        Writer writer = Files.newBufferedWriter(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeusRendimentos.csv"));
+        Writer writer = Files.newBufferedWriter(Paths.get(pathURL + "MeusRendimentos.csv"));
         this.csvWriter = new CSVWriter(writer);
         
         List<String[]> linhas = new ArrayList<>();
@@ -108,7 +114,7 @@ public class MeuDinheiroBO {
 	
 	public List<MeuDinheiro> retornarMeuDinheiro() throws Exception {
 		try {
-	        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuDinheiro.csv"));
+	        Reader reader = Files.newBufferedReader(Paths.get(pathURL + "MeuDinheiro.csv"));
 	        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
 	        
 	        List<String[]> registros = csvReader.readAll();
@@ -135,7 +141,7 @@ public class MeuDinheiroBO {
 	
 	public List<HistoricoMeuDinheiro> retornarHistoricoMeuDinheiro() throws Exception{
 		try {	
-	        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeuHistoricoDinheiro.csv"));
+	        Reader reader = Files.newBufferedReader(Paths.get(pathURL + "MeuHistoricoDinheiro.csv"));
 	        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
 	        
 	        List<String[]> registros = csvReader.readAll();
@@ -161,7 +167,7 @@ public class MeuDinheiroBO {
 
 	public List<RendimentosMensais> retornarMeusRendimentos() throws Exception {
 		try {	
-	        Reader reader = Files.newBufferedReader(Paths.get("C:\\Users\\bruno\\Desktop\\OrcamentoVidaRepositorio\\MeusRendimentos.csv"));
+	        Reader reader = Files.newBufferedReader(Paths.get(pathURL + "MeusRendimentos.csv"));
 	        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
 	        
 	        List<String[]> registros = csvReader.readAll();
@@ -183,6 +189,14 @@ public class MeuDinheiroBO {
 			
 			return salvarMeusRendimentos(listaMeusRendimentos);
 		}
+	}
+
+	public String getPathURL() {
+		return pathURL;
+	}
+
+	public void setPathURL(String pathURL) {
+		this.pathURL = pathURL;
 	}
 
 }
