@@ -137,9 +137,9 @@
 		</pluginManagement>
 
 		<resources>
-			<resource>
-				<directory>src/resources</directory>
-			</resource>
+		    <resource>
+		        <directory>src/main/resources</directory>
+		    </resource>
 		</resources>
 	</build>
 
